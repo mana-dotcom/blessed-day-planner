@@ -10,7 +10,6 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as AgentRouteImport } from './routes/agent'
 import { Route as BilanRouteImport } from './routes/bilan'
 import { Route as HealthRouteImport } from './routes/health'
 import { Route as ProfileRouteImport } from './routes/profile'
@@ -21,11 +20,6 @@ import { Route as TodayRouteImport } from './routes/today'
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AgentRoute = AgentRouteImport.update({
-  id: '/agent',
-  path: '/agent',
   getParentRoute: () => rootRouteImport,
 } as any)
 const BilanRoute = BilanRouteImport.update({
@@ -61,7 +55,6 @@ const TodayRoute = TodayRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/agent': typeof AgentRoute
   '/bilan': typeof BilanRoute
   '/health': typeof HealthRoute
   '/profile': typeof ProfileRoute
@@ -71,7 +64,6 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/agent': typeof AgentRoute
   '/bilan': typeof BilanRoute
   '/health': typeof HealthRoute
   '/profile': typeof ProfileRoute
@@ -82,7 +74,6 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/agent': typeof AgentRoute
   '/bilan': typeof BilanRoute
   '/health': typeof HealthRoute
   '/profile': typeof ProfileRoute
@@ -93,28 +84,13 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    | '/'
-    | '/agent'
-    | '/bilan'
-    | '/health'
-    | '/profile'
-    | '/routines'
-    | '/study'
-    | '/today'
+    '/' | '/bilan' | '/health' | '/profile' | '/routines' | '/study' | '/today'
   fileRoutesByTo: FileRoutesByTo
   to:
-    | '/'
-    | '/agent'
-    | '/bilan'
-    | '/health'
-    | '/profile'
-    | '/routines'
-    | '/study'
-    | '/today'
+    '/' | '/bilan' | '/health' | '/profile' | '/routines' | '/study' | '/today'
   id:
     | '__root__'
     | '/'
-    | '/agent'
     | '/bilan'
     | '/health'
     | '/profile'
@@ -125,7 +101,6 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AgentRoute: typeof AgentRoute
   BilanRoute: typeof BilanRoute
   HealthRoute: typeof HealthRoute
   ProfileRoute: typeof ProfileRoute
@@ -141,13 +116,6 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/agent': {
-      id: '/agent'
-      path: '/agent'
-      fullPath: '/agent'
-      preLoaderRoute: typeof AgentRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/bilan': {
@@ -197,7 +165,6 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AgentRoute: AgentRoute,
   BilanRoute: BilanRoute,
   HealthRoute: HealthRoute,
   ProfileRoute: ProfileRoute,

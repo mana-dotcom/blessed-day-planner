@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { Home, Sparkles, CalendarHeart, User, Check, Trash2, Plus, Pencil, Moon, Sun, Droplets, BookOpen, CalendarDays, Heart } from "lucide-react";
+import { Home, Sparkles, CalendarHeart, User, Check, Trash2, Plus, Pencil, Moon, Sun, Droplets, BookOpen, CalendarDays } from "lucide-react";
 import { useStore, update } from "@/lib/store";
 import { useState, type ReactNode } from "react";
 
@@ -102,7 +102,6 @@ const tabs = [
   { to: "/health", label: "Health", icon: Droplets },
   { to: "/study", label: "Study", icon: BookOpen },
   { to: "/bilan", label: "Bilan", icon: CalendarDays },
-  { to: "/agent", label: "Agent", icon: Heart },
 ] as const;
 
 function BottomNav() {

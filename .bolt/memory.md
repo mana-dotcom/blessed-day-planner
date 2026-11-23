@@ -5,7 +5,7 @@
 - **Blessed Day Planner**: a personal daily planning app for Muslims combining spiritual and self-care routines.
 - Tracks Salat (prayers), Athkar (remembrance), morning/evening skincare routines, hydration/water intake, and tasks/time blocks.
 - Bilingual support: English and French.
-- Includes an "Agent" assistant tab powered by Google Gemini API.
+- The former "Agent" (Gemini AI assistant) tab was removed entirely; there is no AI feature in the app.
 
 ## Brand personality & voice
 
@@ -16,24 +16,15 @@
 ## Visual design & UX direction
 
 - **Theme**: pink/burgundy glassmorphism — frosted glass cards, translucent surfaces, pink and burgundy accent colors.
-- **Layout**: bottom navigation bar with icon-based tabs; each route is a full-page view.
-- **Agent tab**: Heart icon in bottom nav and chat avatar; hero-style priority card, summary card, quick-action buttons, chat interface with FR/EN toggle and clear button.
+- **Layout**: bottom navigation bar with icon-based tabs (Home, Today, Glow, Health, Study, Bilan); each route is a full-page view.
 - **Components**: glassmorphic cards, rounded corners, soft shadows, consistent with existing routes.
 - **Responsive**: mobile-first planner layout.
 
 ## Decisions, constraints & rationale
 
-- **Gemini API integration**: Agent assistant uses `VITE_GEMINI_API_KEY` env var and `gemini-3.8-flash` model via `generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent`.
-- **Model name bug fixed**: model string must be `"gemini-3.8-flash"` (no `models/` prefix) because the URL path already includes `/models/`; prefixing caused a doubled path (`/models/models/...`) and 404.
-- **Error display**: failed API requests show up to 500 characters of the API's response body for debugging.
-- **localStorage keys**: agent state stored under `blessings-agent-v1` (separate from existing app data keys) to avoid breaking existing data or styling.
-- **Agent reads existing progress** from the same localStorage store the app uses (Salat, Athkar, skincare routines, hydration, tasks/time blocks) plus current time of day for context-aware suggestions.
 - **Framework**: Vite + React + TanStack Router (file-based routing with auto-generated `routeTree.gen.ts`).
-- **Build limitation**: environment lacks `node_modules` and `npm install` fails on lockfile — builds can't run locally; code must follow existing patterns exactly.
+- The dev server regenerates `routeTree.gen.ts` when route files are added or removed.
 
 ## Open questions & assumptions
 
-- Existing localStorage schema for progress data is assumed stable; agent reads but does not mutate it.
-- TanStack Router file-based routing requires `routeTree.gen.ts` updates — manual edits needed when adding routes in environments where the generator can't run.
-- Language preference detection (browser locale vs. explicit toggle) not confirmed — agent uses explicit FR/EN toggle.
-- `VITE_GEMINI_API_KEY` must be provided at build/runtime; behavior without it (fallback or error) not yet confirmed.
+- Existing localStorage schema for progress data is assumed stable.
