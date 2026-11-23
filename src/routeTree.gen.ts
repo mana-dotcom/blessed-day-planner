@@ -16,6 +16,7 @@ import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as RoutinesRouteImport } from './routes/routines'
 import { Route as StudyRouteImport } from './routes/study'
 import { Route as TodayRouteImport } from './routes/today'
+import { Route as AgentRouteImport } from './routes/agent'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -52,6 +53,11 @@ const TodayRoute = TodayRouteImport.update({
   path: '/today',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AgentRoute = AgentRouteImport.update({
+  id: '/agent',
+  path: '/agent',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -61,6 +67,7 @@ export interface FileRoutesByFullPath {
   '/routines': typeof RoutinesRoute
   '/study': typeof StudyRoute
   '/today': typeof TodayRoute
+  '/agent': typeof AgentRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -70,6 +77,7 @@ export interface FileRoutesByTo {
   '/routines': typeof RoutinesRoute
   '/study': typeof StudyRoute
   '/today': typeof TodayRoute
+  '/agent': typeof AgentRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -80,14 +88,15 @@ export interface FileRoutesById {
   '/routines': typeof RoutinesRoute
   '/study': typeof StudyRoute
   '/today': typeof TodayRoute
+  '/agent': typeof AgentRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    '/' | '/bilan' | '/health' | '/profile' | '/routines' | '/study' | '/today'
+    '/' | '/bilan' | '/health' | '/profile' | '/routines' | '/study' | '/today' | '/agent'
   fileRoutesByTo: FileRoutesByTo
   to:
-    '/' | '/bilan' | '/health' | '/profile' | '/routines' | '/study' | '/today'
+    '/' | '/bilan' | '/health' | '/profile' | '/routines' | '/study' | '/today' | '/agent'
   id:
     | '__root__'
     | '/'
@@ -97,6 +106,7 @@ export interface FileRouteTypes {
     | '/routines'
     | '/study'
     | '/today'
+    | '/agent'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -107,6 +117,7 @@ export interface RootRouteChildren {
   RoutinesRoute: typeof RoutinesRoute
   StudyRoute: typeof StudyRoute
   TodayRoute: typeof TodayRoute
+  AgentRoute: typeof AgentRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -160,6 +171,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TodayRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/agent': {
+      id: '/agent'
+      path: '/agent'
+      fullPath: '/agent'
+      preLoaderRoute: typeof AgentRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -171,6 +189,7 @@ const rootRouteChildren: RootRouteChildren = {
   RoutinesRoute: RoutinesRoute,
   StudyRoute: StudyRoute,
   TodayRoute: TodayRoute,
+  AgentRoute: AgentRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
