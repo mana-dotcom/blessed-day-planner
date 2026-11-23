@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { Droplets, RotateCcw, Salad, Dumbbell, Shuffle, Check } from "lucide-react";
 import { Page, Card } from "@/components/ui-kit";
+import { SportsList, WalkTimer } from "@/components/sports";
 import { useStore, update } from "@/lib/store";
 import { recipes, type Recipe } from "@/lib/content";
 
@@ -110,6 +111,8 @@ function Health() {
       <Water />
       <Reminder k="food" title="Healthy Food" text="Un repas équilibré aujourd'hui : légumes, protéines, fibres." icon={<Salad className="h-6 w-6" />} />
       <Reminder k="sport" title="Sport" text="Bouge au moins 20 min : marche, yoga ou séance." icon={<Dumbbell className="h-6 w-6" />} />
+      <SportsList />
+      <WalkTimer />
       <Recipes />
     </Page>
   );
