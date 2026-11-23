@@ -141,7 +141,7 @@ export function topPriority(snap: Snapshot, lang: Lang): { title: string; detail
   return L(lang === "fr" ? "Tout est fait" : "All done", lang === "fr" ? "Alhamdulillah, ta journée est complète ♡" : "Alhamdulillah, your day is complete ♡");
 }
 
-const GEMINI_MODEL = "models/gemini-3.8-flash";
+const GEMINI_MODEL = "gemini-3.8-flash";
 const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent`;
 
 function apiKey(): string | undefined {
@@ -216,8 +216,8 @@ export async function aiReply(
     if (!res.ok) {
       const detail = await res.text().catch(() => "");
       return lang === "fr"
-        ? `L'assistant IA a renvoyé une erreur (${res.status}). ${detail ? "Détail : " + detail.slice(0, 200) : ""}`
-        : `The AI assistant returned an error (${res.status}). ${detail ? "Detail: " + detail.slice(0, 200) : ""}`;
+        ? `L'assistant IA a renvoyé une erreur (${res.status}). ${detail ? "Détail : " + detail.slice(0, 500) : ""}`
+        : `The AI assistant returned an error (${res.status}). ${detail ? "Detail: " + detail.slice(0, 500) : ""}`;
     }
     const data = await res.json();
     const text: string | undefined =

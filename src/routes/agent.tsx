@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
-import { Bot, Send, Sparkles, Languages, AlertCircle, Loader2 } from "lucide-react";
+import { Heart, Send, Sparkles, Languages, AlertCircle, Loader2 } from "lucide-react";
 import { Page, Card } from "@/components/ui-kit";
 import { useStore } from "@/lib/store";
 import {
@@ -168,7 +168,7 @@ function Agent() {
 }
 
 function Avatar() {
-  return <div className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-secondary text-accent-strong"><Bot className="h-5 w-5" /></div>;
+  return <div className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-secondary text-accent-strong"><Heart className="h-5 w-5" /></div>;
 }
 function UserAvatar() {
   return <div className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-accent-strong text-primary-foreground font-display text-sm">M</div>;
