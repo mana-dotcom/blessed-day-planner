@@ -19,6 +19,7 @@ export const Route = createFileRoute("/cycle")({
 });
 
 const small = "min-w-0 rounded-full border border-border bg-card px-3 py-2 text-sm outline-none focus:border-accent-strong";
+const dateField = "block w-full min-w-0 rounded-full border border-border bg-card px-2 py-2 text-sm normal-case tracking-normal text-foreground outline-none focus:border-accent-strong";
 const pill = (on: boolean) => `rounded-full px-3 py-1.5 text-[10px] uppercase tracking-widest transition ${on ? "bg-primary text-primary-foreground" : "bg-secondary text-secondary-foreground"}`;
 const fmt = (k: string, o: Intl.DateTimeFormatOptions = { day: "numeric", month: "short" }) => new Date(k + "T12:00").toLocaleDateString("fr-FR", o);
 const plural = (n: number, w: string) => `${n} ${w}${Math.abs(n) > 1 ? "s" : ""}`;
@@ -221,10 +222,9 @@ function PeriodRow({ p, next, c }: { p: Period; next?: Period | undefined; c: Cy
   if (editing) {
     return (
       <form onSubmit={save} className="space-y-2 rounded-2xl bg-card/70 px-3 py-3">
-        <div className="flex items-center gap-2">
-          <input type="date" value={start} onChange={(e) => setStart(e.target.value)} aria-label="Début" className={`${small} flex-1`} />
-          <span className="text-muted-foreground">→</span>
-          <input type="date" value={end} min={start} onChange={(e) => setEnd(e.target.value)} aria-label="Fin" className={`${small} flex-1`} />
+        <div className="grid grid-cols-2 gap-2">
+          <input type="date" value={start} onChange={(e) => setStart(e.target.value)} aria-label="Début" className={dateField} />
+          <input type="date" value={end} min={start} onChange={(e) => setEnd(e.target.value)} aria-label="Fin" className={dateField} />
         </div>
         {error && <p className="text-sm text-destructive">{error}</p>}
         <div className="flex justify-end gap-2">
@@ -240,7 +240,7 @@ function PeriodRow({ p, next, c }: { p: Period; next?: Period | undefined; c: Cy
       <span className="cycle-period grid h-9 w-9 shrink-0 place-items-center rounded-full"><Droplet className="h-4 w-4" /></span>
       <div className="min-w-0 flex-1">
         <p className="truncate font-serif text-lg">{fmt(p.start)} → {p.end ? fmt(p.end) : "en cours"}</p>
-        <p className="eyebrow truncate !tracking-[0.15em] text-[10px]">
+        <p className="eyebrow !tracking-[0.15em] text-[10px]">
           {p.end ? plural(len, "jour") : `~${plural(len, "jour")} estimés`}{next ? ` · cycle de ${plural(diffDays(p.start, next.start), "jour")}` : ""}
         </p>
       </div>
@@ -275,12 +275,11 @@ function History({ c, today }: { c: CycleData; today: string }) {
       </div>
       <form onSubmit={add} className="mt-3 space-y-2">
         <p className="eyebrow text-[10px]">Ajouter des règles passées</p>
-        <div className="flex items-center gap-2">
-          <input type="date" value={start} max={today} onChange={(e) => setStart(e.target.value)} aria-label="Date de début" className={`${small} flex-1`} />
-          <span className="text-muted-foreground">→</span>
-          <input type="date" value={end} min={start} onChange={(e) => setEnd(e.target.value)} aria-label="Date de fin" className={`${small} flex-1`} />
-          <button aria-label="Ajouter les règles" className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-primary text-primary-foreground"><Plus className="h-5 w-5" /></button>
+        <div className="grid grid-cols-2 gap-2">
+          <label className="eyebrow !text-[9px]">Début<input type="date" value={start} max={today} onChange={(e) => setStart(e.target.value)} aria-label="Date de début" className={`${dateField} mt-1`} /></label>
+          <label className="eyebrow !text-[9px]">Fin (optionnel)<input type="date" value={end} min={start} onChange={(e) => setEnd(e.target.value)} aria-label="Date de fin" className={`${dateField} mt-1`} /></label>
         </div>
+        <button aria-label="Ajouter les règles" className="flex w-full items-center justify-center gap-2 rounded-full bg-primary py-2.5 text-xs uppercase tracking-widest text-primary-foreground"><Plus className="h-4 w-4" />Ajouter</button>
         {error && <p className="text-sm text-destructive">{error}</p>}
       </form>
       <div className="mt-5 border-t border-border/60 pt-4">
