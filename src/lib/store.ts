@@ -8,7 +8,18 @@ export type DaySummary = {
   tasks: number; tasksTotal: number; studyMin: number; waterMl: number; waterGoalMl: number;
   food: boolean; sport: boolean; topic: boolean;
 };
+export type Walk = { id: string; day: string; seconds: number; at: number };
+export type Plot = { id: string; plant: string | null; progress: number };
+export type Farm = {
+  stars: number; water: number; waterDay: string; maxWater: number; plots: Plot[];
+  seeds: Record<string, number>; unlocked: string[]; harvest: Record<string, number>;
+  bouquets: number[]; decor: string[];
+};
 export type State = {
+  sports: (Item & { time: string })[];
+  walks: Walk[];
+  walkTimer: { startedAt: number | null; accumulated: number };
+  farm: Farm;
   day: string;
   name: string;
   theme: "light" | "dark";
@@ -57,7 +68,20 @@ const initial = (): State => ({
   topic: { offset: 0, explored: false },
   history: {},
   garden: { blooms: 0, lastBloom: "" },
+  sports: ["Marche", "Yoga", "Stretching"].map((label) => ({ id: uid(), label, done: false, time: "" })),
+  walks: [],
+  walkTimer: { startedAt: null, accumulated: 0 },
+  farm: {
+    stars: 10, water: 10, waterDay: dayKey(), maxWater: 10,
+    plots: Array.from({ length: 4 }, () => ({ id: uid(), plant: null, progress: 0 })),
+    seeds: { tulipe: 2, radis: 2, marguerite: 1 }, unlocked: ["tulipe", "marguerite", "radis"],
+    harvest: {}, bouquets: [], decor: [],
+  },
 });
+
+// Watering cans refill once per calendar day.
+const refillFarm = (s: State): State =>
+  s.farm.waterDay === dayKey() ? s : { ...s, farm: { ...s.farm, water: s.farm.maxWater, waterDay: dayKey() } };
 
 const n = (a: { done: boolean }[]) => a.filter((x) => x.done).length;
 
@@ -85,7 +109,7 @@ function rollover(s: State): State {
   return {
     ...s, day: dayKey(), history: { ...s.history, [s.day]: summarize(s) },
     prayers: off(s.prayers), morning: off(s.morning), evening: off(s.evening),
-    athkar: { ...s.athkar, count: 0, done: false }, blocks: [],
+    athkar: { ...s.athkar, count: 0, done: false }, blocks: [], sports: off(s.sports),
     water: { ...s.water, glasses: 0 }, study: s.study.filter((b) => !b.done).map((b) => ({ ...b, spent: 0 })),
     health: { food: false, sport: false }, topic: { offset: 0, explored: false },
   };
@@ -107,14 +131,15 @@ function load() {
     if (raw) {
       const p = JSON.parse(raw);
       const base = initial();
-      state = rollover({ ...base, ...p, water: { ...base.water, ...p.water }, health: { ...base.health, ...p.health }, topic: { ...base.topic, ...p.topic }, garden: { ...base.garden, ...p.garden }, prayers: normalizePrayers(p.prayers) });
+      state = refillFarm(rollover({ ...base, ...p, water: { ...base.water, ...p.water }, health: { ...base.health, ...p.health }, topic: { ...base.topic, ...p.topic }, garden: { ...base.garden, ...p.garden }, prayers: normalizePrayers(p.prayers),
+        walkTimer: { ...base.walkTimer, ...p.walkTimer }, farm: { ...base.farm, ...p.farm } }));
     }
   } catch { /* ignore corrupt storage */ }
   applyTheme();
 }
 
 export function update(fn: (s: State) => State) {
-  state = rollover(fn(state));
+  state = refillFarm(rollover(fn(state)));
   const today = summarize(state);
   state = { ...state, history: { ...state.history, [state.day]: today } };
   if (today.progress === 100 && state.garden.lastBloom !== state.day) {

@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as BilanRouteImport } from './routes/bilan'
 import { Route as HealthRouteImport } from './routes/health'
+import { Route as JardinRouteImport } from './routes/jardin'
 import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as RoutinesRouteImport } from './routes/routines'
 import { Route as StudyRouteImport } from './routes/study'
@@ -30,6 +31,11 @@ const BilanRoute = BilanRouteImport.update({
 const HealthRoute = HealthRouteImport.update({
   id: '/health',
   path: '/health',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const JardinRoute = JardinRouteImport.update({
+  id: '/jardin',
+  path: '/jardin',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProfileRoute = ProfileRouteImport.update({
@@ -57,6 +63,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/bilan': typeof BilanRoute
   '/health': typeof HealthRoute
+  '/jardin': typeof JardinRoute
   '/profile': typeof ProfileRoute
   '/routines': typeof RoutinesRoute
   '/study': typeof StudyRoute
@@ -66,6 +73,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/bilan': typeof BilanRoute
   '/health': typeof HealthRoute
+  '/jardin': typeof JardinRoute
   '/profile': typeof ProfileRoute
   '/routines': typeof RoutinesRoute
   '/study': typeof StudyRoute
@@ -76,6 +84,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/bilan': typeof BilanRoute
   '/health': typeof HealthRoute
+  '/jardin': typeof JardinRoute
   '/profile': typeof ProfileRoute
   '/routines': typeof RoutinesRoute
   '/study': typeof StudyRoute
@@ -84,15 +93,30 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    '/' | '/bilan' | '/health' | '/profile' | '/routines' | '/study' | '/today'
+    | '/'
+    | '/bilan'
+    | '/health'
+    | '/jardin'
+    | '/profile'
+    | '/routines'
+    | '/study'
+    | '/today'
   fileRoutesByTo: FileRoutesByTo
   to:
-    '/' | '/bilan' | '/health' | '/profile' | '/routines' | '/study' | '/today'
+    | '/'
+    | '/bilan'
+    | '/health'
+    | '/jardin'
+    | '/profile'
+    | '/routines'
+    | '/study'
+    | '/today'
   id:
     | '__root__'
     | '/'
     | '/bilan'
     | '/health'
+    | '/jardin'
     | '/profile'
     | '/routines'
     | '/study'
@@ -103,6 +127,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   BilanRoute: typeof BilanRoute
   HealthRoute: typeof HealthRoute
+  JardinRoute: typeof JardinRoute
   ProfileRoute: typeof ProfileRoute
   RoutinesRoute: typeof RoutinesRoute
   StudyRoute: typeof StudyRoute
@@ -130,6 +155,13 @@ declare module '@tanstack/react-router' {
       path: '/health'
       fullPath: '/health'
       preLoaderRoute: typeof HealthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/jardin': {
+      id: '/jardin'
+      path: '/jardin'
+      fullPath: '/jardin'
+      preLoaderRoute: typeof JardinRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/profile': {
@@ -167,6 +199,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   BilanRoute: BilanRoute,
   HealthRoute: HealthRoute,
+  JardinRoute: JardinRoute,
   ProfileRoute: ProfileRoute,
   RoutinesRoute: RoutinesRoute,
   StudyRoute: StudyRoute,
