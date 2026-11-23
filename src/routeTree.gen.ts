@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as BilanRouteImport } from './routes/bilan'
 import { Route as BudgetRouteImport } from './routes/budget'
+import { Route as CycleRouteImport } from './routes/cycle'
 import { Route as HealthRouteImport } from './routes/health'
 import { Route as JardinRouteImport } from './routes/jardin'
 import { Route as ProfileRouteImport } from './routes/profile'
@@ -33,6 +34,11 @@ const BilanRoute = BilanRouteImport.update({
 const BudgetRoute = BudgetRouteImport.update({
   id: '/budget',
   path: '/budget',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CycleRoute = CycleRouteImport.update({
+  id: '/cycle',
+  path: '/cycle',
   getParentRoute: () => rootRouteImport,
 } as any)
 const HealthRoute = HealthRouteImport.update({
@@ -75,6 +81,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/bilan': typeof BilanRoute
   '/budget': typeof BudgetRoute
+  '/cycle': typeof CycleRoute
   '/health': typeof HealthRoute
   '/jardin': typeof JardinRoute
   '/profile': typeof ProfileRoute
@@ -87,6 +94,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/bilan': typeof BilanRoute
   '/budget': typeof BudgetRoute
+  '/cycle': typeof CycleRoute
   '/health': typeof HealthRoute
   '/jardin': typeof JardinRoute
   '/profile': typeof ProfileRoute
@@ -100,6 +108,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/bilan': typeof BilanRoute
   '/budget': typeof BudgetRoute
+  '/cycle': typeof CycleRoute
   '/health': typeof HealthRoute
   '/jardin': typeof JardinRoute
   '/profile': typeof ProfileRoute
@@ -114,6 +123,7 @@ export interface FileRouteTypes {
     | '/'
     | '/bilan'
     | '/budget'
+    | '/cycle'
     | '/health'
     | '/jardin'
     | '/profile'
@@ -126,6 +136,7 @@ export interface FileRouteTypes {
     | '/'
     | '/bilan'
     | '/budget'
+    | '/cycle'
     | '/health'
     | '/jardin'
     | '/profile'
@@ -138,6 +149,7 @@ export interface FileRouteTypes {
     | '/'
     | '/bilan'
     | '/budget'
+    | '/cycle'
     | '/health'
     | '/jardin'
     | '/profile'
@@ -151,6 +163,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   BilanRoute: typeof BilanRoute
   BudgetRoute: typeof BudgetRoute
+  CycleRoute: typeof CycleRoute
   HealthRoute: typeof HealthRoute
   JardinRoute: typeof JardinRoute
   ProfileRoute: typeof ProfileRoute
@@ -181,6 +194,13 @@ declare module '@tanstack/react-router' {
       path: '/budget'
       fullPath: '/budget'
       preLoaderRoute: typeof BudgetRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cycle': {
+      id: '/cycle'
+      path: '/cycle'
+      fullPath: '/cycle'
+      preLoaderRoute: typeof CycleRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/health': {
@@ -239,6 +259,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   BilanRoute: BilanRoute,
   BudgetRoute: BudgetRoute,
+  CycleRoute: CycleRoute,
   HealthRoute: HealthRoute,
   JardinRoute: JardinRoute,
   ProfileRoute: ProfileRoute,
