@@ -23,6 +23,7 @@ function Routine({ k, title, icon }: { k: "morning" | "evening"; title: string; 
         {list.map((it, i) => (
           <CheckRow key={it.id} label={it.label} sub={`Étape ${i + 1}`} done={it.done}
             onToggle={() => set((l) => l.map((x) => (x.id === it.id ? { ...x, done: !x.done } : x)))}
+            onEdit={(v) => set((l) => l.map((x) => (x.id === it.id ? { ...x, label: v } : x)))}
             onDelete={() => set((l) => l.filter((x) => x.id !== it.id))} />
         ))}
       </div>
@@ -34,8 +35,8 @@ function Routine({ k, title, icon }: { k: "morning" | "evening"; title: string; 
 function Routines() {
   return (
     <Page eyebrow="Glow" title="Routines." subtitle="Prendre soin de soi est une forme de gratitude.">
-      <Routine k="morning" title="Morning Glow Skincare" icon={<Sun className="h-5 w-5" />} />
-      <Routine k="evening" title="Evening Calm Skincare" icon={<Moon className="h-5 w-5" />} />
+      <Routine k="morning" title="Morning Routine" icon={<Sun className="h-5 w-5" />} />
+      <Routine k="evening" title="Night Routine" icon={<Moon className="h-5 w-5" />} />
     </Page>
   );
 }

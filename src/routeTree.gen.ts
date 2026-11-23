@@ -10,13 +10,26 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as BilanRouteImport } from './routes/bilan'
+import { Route as HealthRouteImport } from './routes/health'
 import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as RoutinesRouteImport } from './routes/routines'
+import { Route as StudyRouteImport } from './routes/study'
 import { Route as TodayRouteImport } from './routes/today'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BilanRoute = BilanRouteImport.update({
+  id: '/bilan',
+  path: '/bilan',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HealthRoute = HealthRouteImport.update({
+  id: '/health',
+  path: '/health',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProfileRoute = ProfileRouteImport.update({
@@ -29,6 +42,11 @@ const RoutinesRoute = RoutinesRouteImport.update({
   path: '/routines',
   getParentRoute: () => rootRouteImport,
 } as any)
+const StudyRoute = StudyRouteImport.update({
+  id: '/study',
+  path: '/study',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TodayRoute = TodayRouteImport.update({
   id: '/today',
   path: '/today',
@@ -37,35 +55,57 @@ const TodayRoute = TodayRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/bilan': typeof BilanRoute
+  '/health': typeof HealthRoute
   '/profile': typeof ProfileRoute
   '/routines': typeof RoutinesRoute
+  '/study': typeof StudyRoute
   '/today': typeof TodayRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/bilan': typeof BilanRoute
+  '/health': typeof HealthRoute
   '/profile': typeof ProfileRoute
   '/routines': typeof RoutinesRoute
+  '/study': typeof StudyRoute
   '/today': typeof TodayRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/bilan': typeof BilanRoute
+  '/health': typeof HealthRoute
   '/profile': typeof ProfileRoute
   '/routines': typeof RoutinesRoute
+  '/study': typeof StudyRoute
   '/today': typeof TodayRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/profile' | '/routines' | '/today'
+  fullPaths:
+    '/' | '/bilan' | '/health' | '/profile' | '/routines' | '/study' | '/today'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/profile' | '/routines' | '/today'
-  id: '__root__' | '/' | '/profile' | '/routines' | '/today'
+  to:
+    '/' | '/bilan' | '/health' | '/profile' | '/routines' | '/study' | '/today'
+  id:
+    | '__root__'
+    | '/'
+    | '/bilan'
+    | '/health'
+    | '/profile'
+    | '/routines'
+    | '/study'
+    | '/today'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  BilanRoute: typeof BilanRoute
+  HealthRoute: typeof HealthRoute
   ProfileRoute: typeof ProfileRoute
   RoutinesRoute: typeof RoutinesRoute
+  StudyRoute: typeof StudyRoute
   TodayRoute: typeof TodayRoute
 }
 
@@ -76,6 +116,20 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/bilan': {
+      id: '/bilan'
+      path: '/bilan'
+      fullPath: '/bilan'
+      preLoaderRoute: typeof BilanRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/health': {
+      id: '/health'
+      path: '/health'
+      fullPath: '/health'
+      preLoaderRoute: typeof HealthRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/profile': {
@@ -92,6 +146,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RoutinesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/study': {
+      id: '/study'
+      path: '/study'
+      fullPath: '/study'
+      preLoaderRoute: typeof StudyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/today': {
       id: '/today'
       path: '/today'
@@ -104,8 +165,11 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  BilanRoute: BilanRoute,
+  HealthRoute: HealthRoute,
   ProfileRoute: ProfileRoute,
   RoutinesRoute: RoutinesRoute,
+  StudyRoute: StudyRoute,
   TodayRoute: TodayRoute,
 }
 export const routeTree = rootRouteImport

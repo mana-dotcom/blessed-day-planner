@@ -1,7 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Moon, Sparkles, ListChecks, HandHeart } from "lucide-react";
+import { Moon, Sparkles, ListChecks, HandHeart, Droplets, BookOpen, SkipForward, Check } from "lucide-react";
 import { Page, Card } from "@/components/ui-kit";
-import { useStore, progress } from "@/lib/store";
+import { useStore, progress, update } from "@/lib/store";
+import { topicFor } from "@/lib/content";
 
 export const Route = createFileRoute("/")({
   head: () => ({ meta: [
@@ -22,6 +23,8 @@ function Index() {
     { to: "/today", label: "Athkar", icon: HandHeart, info: `${s.athkar.count}/${s.athkar.goal}` },
     { to: "/routines", label: "Routines", icon: Sparkles, info: `${[...s.morning, ...s.evening].filter((x) => x.done).length}/${s.morning.length + s.evening.length}` },
     { to: "/today", label: "Time Block", icon: ListChecks, info: `${s.blocks.filter((x) => x.done).length}/${s.blocks.length}` },
+    { to: "/health", label: "Water", icon: Droplets, info: `${((s.water.glasses * s.water.glassMl) / 1000).toFixed(2)} L` },
+    { to: "/study", label: "Study", icon: BookOpen, info: `${s.study.reduce((t, b) => t + b.spent, 0)} min` },
   ] as const;
   return (
     <Page eyebrow={date} title="Today's Blessings." subtitle={s.name ? `Bismillah, ${s.name} ♡` : "Un petit pas après l'autre ♡"}>
@@ -44,7 +47,30 @@ function Index() {
           </Link>
         ))}
       </div>
+      <TopicCard />
       <Card><p className="font-serif text-lg italic text-muted-foreground">« Certes, avec la difficulté vient la facilité. » — 94:6</p></Card>
     </Page>
+  );
+}
+
+function TopicCard() {
+  const [s, ready] = useStore();
+  const t = topicFor(new Date(), ready ? s.topic.offset : 0);
+  const done = ready && s.topic.explored;
+  return (
+    <Card title="Sujet du jour" right={<span className="eyebrow">Islam</span>}>
+      <p className="font-display text-2xl text-accent-strong">{t.title}</p>
+      <p className="mt-1 font-serif text-lg italic text-muted-foreground">{t.hint}</p>
+      <div className="mt-4 flex gap-2">
+        <button onClick={() => update((st) => ({ ...st, topic: { ...st.topic, explored: !st.topic.explored } }))}
+          className={`flex items-center gap-1 rounded-full px-4 py-2 text-xs uppercase tracking-widest ${done ? "bg-accent-strong text-primary-foreground" : "bg-primary text-primary-foreground"}`}>
+          <Check className="h-4 w-4" />{done ? "Exploré" : "Marquer exploré"}
+        </button>
+        <button onClick={() => update((st) => ({ ...st, topic: { offset: st.topic.offset + 1, explored: false } }))}
+          className="flex items-center gap-1 rounded-full border border-border px-4 py-2 text-xs uppercase tracking-widest">
+          <SkipForward className="h-4 w-4" />Suivant
+        </button>
+      </div>
+    </Card>
   );
 }

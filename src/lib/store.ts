@@ -2,24 +2,38 @@ import { useEffect, useState } from "react";
 
 export type Item = { id: string; label: string; done: boolean };
 export type Prayer = { name: string; time: string; done: boolean };
+export type StudyBlock = Item & { minutes: number; spent: number };
+export type DaySummary = {
+  progress: number; prayers: number; routines: number; routinesTotal: number;
+  tasks: number; tasksTotal: number; studyMin: number; waterMl: number; waterGoalMl: number;
+  food: boolean; sport: boolean; topic: boolean;
+};
 export type State = {
   day: string;
   name: string;
+  theme: "light" | "dark";
   prayers: Prayer[];
   athkar: { count: number; goal: number; done: boolean };
   morning: Item[];
   evening: Item[];
   blocks: (Item & { time: string })[];
+  water: { glasses: number; goalMl: number; glassMl: number };
+  study: StudyBlock[];
+  health: { food: boolean; sport: boolean };
+  topic: { offset: number; explored: boolean };
+  history: Record<string, DaySummary>;
 };
 
 const KEY = "blessings-v1";
-const today = () => new Date().toISOString().slice(0, 10);
+export const dayKey = (d = new Date()) =>
+  `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
 const uid = () => Math.random().toString(36).slice(2, 9);
 const mk = (labels: string[]): Item[] => labels.map((label) => ({ id: uid(), label, done: false }));
 
 const initial = (): State => ({
-  day: today(),
+  day: dayKey(),
   name: "",
+  theme: "light",
   prayers: [
     ["Fajr", "Aube"], ["Dhuhr", "Midi"], ["Asr", "Après-midi"], ["Maghrib", "Coucher"], ["Isha", "Nuit"],
   ].map(([name, time]) => ({ name: name!, time: time!, done: false })),
@@ -27,16 +41,42 @@ const initial = (): State => ({
   morning: mk(["Nettoyant doux", "Tonique", "Sérum vitamine C", "Hydratant", "Écran solaire"]),
   evening: mk(["Démaquillant", "Nettoyant", "Sérum", "Crème de nuit"]),
   blocks: [],
+  water: { glasses: 0, goalMl: 2000, glassMl: 250 },
+  study: [],
+  health: { food: false, sport: false },
+  topic: { offset: 0, explored: false },
+  history: {},
 });
 
-// New day: keep the user's steps and tasks list structure, uncheck everything.
+const n = (a: { done: boolean }[]) => a.filter((x) => x.done).length;
+
+export function progress(s: State) {
+  const all = [...s.prayers, ...s.morning, ...s.evening, ...s.blocks, ...s.study, s.athkar,
+    { done: s.water.glasses * s.water.glassMl >= s.water.goalMl }, { done: s.health.food }, { done: s.health.sport }];
+  return Math.round((n(all) / all.length) * 100);
+}
+
+export function summarize(s: State): DaySummary {
+  return {
+    progress: progress(s), prayers: n(s.prayers),
+    routines: n(s.morning) + n(s.evening), routinesTotal: s.morning.length + s.evening.length,
+    tasks: n(s.blocks), tasksTotal: s.blocks.length,
+    studyMin: s.study.reduce((t, b) => t + (b.done ? Math.max(b.spent, b.minutes) : b.spent), 0),
+    waterMl: s.water.glasses * s.water.glassMl, waterGoalMl: s.water.goalMl,
+    food: s.health.food, sport: s.health.sport, topic: s.topic.explored,
+  };
+}
+
+// New day: archive yesterday in history, keep lists, uncheck everything.
 function rollover(s: State): State {
-  if (s.day === today()) return s;
+  if (s.day === dayKey()) return s;
   const off = <T extends { done: boolean }>(a: T[]) => a.map((x) => ({ ...x, done: false }));
   return {
-    ...s, day: today(),
+    ...s, day: dayKey(), history: { ...s.history, [s.day]: summarize(s) },
     prayers: off(s.prayers), morning: off(s.morning), evening: off(s.evening),
     athkar: { ...s.athkar, count: 0, done: false }, blocks: [],
+    water: { ...s.water, glasses: 0 }, study: s.study.filter((b) => !b.done).map((b) => ({ ...b, spent: 0 })),
+    health: { food: false, sport: false }, topic: { offset: 0, explored: false },
   };
 }
 
@@ -44,18 +84,29 @@ let state: State = initial();
 let loaded = false;
 const subs = new Set<() => void>();
 
+function applyTheme() {
+  document.documentElement.classList.toggle("dark", state.theme === "dark");
+}
+
 function load() {
   if (loaded || typeof window === "undefined") return;
   loaded = true;
   try {
     const raw = localStorage.getItem(KEY);
-    if (raw) state = rollover({ ...initial(), ...JSON.parse(raw) });
+    if (raw) {
+      const p = JSON.parse(raw);
+      const base = initial();
+      state = rollover({ ...base, ...p, water: { ...base.water, ...p.water }, health: { ...base.health, ...p.health }, topic: { ...base.topic, ...p.topic } });
+    }
   } catch { /* ignore corrupt storage */ }
+  applyTheme();
 }
 
 export function update(fn: (s: State) => State) {
-  state = fn(state);
+  state = rollover(fn(state));
+  state = { ...state, history: { ...state.history, [state.day]: summarize(state) } };
   localStorage.setItem(KEY, JSON.stringify(state));
+  applyTheme();
   subs.forEach((f) => f());
 }
 
@@ -65,17 +116,11 @@ export function useStore(): [State, boolean] {
   useEffect(() => {
     load();
     setReady(true);
-    const f = () => force((n) => n + 1);
+    const f = () => force((x) => x + 1);
     subs.add(f);
     return () => { subs.delete(f); };
   }, []);
   return [state, ready];
-}
-
-export function progress(s: State) {
-  const all = [...s.prayers, ...s.morning, ...s.evening, ...s.blocks, s.athkar];
-  if (!all.length) return 0;
-  return Math.round((all.filter((x) => x.done).length / all.length) * 100);
 }
 
 export const newItem = (label: string): Item => ({ id: uid(), label, done: false });
