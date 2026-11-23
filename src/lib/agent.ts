@@ -234,9 +234,10 @@ export async function aiReply(
         body: JSON.stringify(body),
         signal,
       });
-      if (!RETRYABLE_STATUSES.has(res.status) || attempt >= RETRY_DELAYS_MS.length) break;
+      const delay = RETRY_DELAYS_MS[attempt];
+      if (!RETRYABLE_STATUSES.has(res.status) || delay === undefined) break;
       await res.body?.cancel().catch(() => {});
-      await wait(RETRY_DELAYS_MS[attempt], signal);
+      await wait(delay, signal);
       attempt++;
     }
     if (!res.ok) {
