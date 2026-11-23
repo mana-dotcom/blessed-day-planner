@@ -4,7 +4,7 @@ export type Item = { id: string; label: string; done: boolean };
 export type Prayer = { name: string; time: string; done: boolean };
 export type StudyBlock = Item & { minutes: number; spent: number };
 export type DaySummary = {
-  progress: number; prayers: number; routines: number; routinesTotal: number;
+  progress: number; prayers: number; prayersTotal?: number; routines: number; routinesTotal: number;
   tasks: number; tasksTotal: number; studyMin: number; waterMl: number; waterGoalMl: number;
   food: boolean; sport: boolean; topic: boolean;
 };
@@ -22,7 +22,19 @@ export type State = {
   health: { food: boolean; sport: boolean };
   topic: { offset: number; explored: boolean };
   history: Record<string, DaySummary>;
+  garden: { blooms: number; lastBloom: string };
 };
+
+export const PRAYERS: [string, string][] = [
+  ["Fajr", "Aube"], ["Duha", "Matinée"], ["Dhuhr", "Midi"], ["Asr", "Après-midi"],
+  ["Maghrib", "Coucher"], ["Isha", "Nuit"], ["Qiyam al-Layl", "Fin de nuit"],
+];
+
+// Keeps saved done-flags while adding any prayer missing from older saves, in canonical order.
+function normalizePrayers(saved: Prayer[] | undefined): Prayer[] {
+  const byName = new Map((saved ?? []).map((p) => [p.name, p]));
+  return PRAYERS.map(([name, time]) => ({ name, time, done: byName.get(name)?.done ?? false }));
+}
 
 const KEY = "blessings-v1";
 export const dayKey = (d = new Date()) =>
@@ -34,9 +46,7 @@ const initial = (): State => ({
   day: dayKey(),
   name: "",
   theme: "light",
-  prayers: [
-    ["Fajr", "Aube"], ["Dhuhr", "Midi"], ["Asr", "Après-midi"], ["Maghrib", "Coucher"], ["Isha", "Nuit"],
-  ].map(([name, time]) => ({ name: name!, time: time!, done: false })),
+  prayers: normalizePrayers(undefined),
   athkar: { count: 0, goal: 33, done: false },
   morning: mk(["Nettoyant doux", "Tonique", "Sérum vitamine C", "Hydratant", "Écran solaire"]),
   evening: mk(["Démaquillant", "Nettoyant", "Sérum", "Crème de nuit"]),
@@ -46,6 +56,7 @@ const initial = (): State => ({
   health: { food: false, sport: false },
   topic: { offset: 0, explored: false },
   history: {},
+  garden: { blooms: 0, lastBloom: "" },
 });
 
 const n = (a: { done: boolean }[]) => a.filter((x) => x.done).length;
@@ -58,7 +69,7 @@ export function progress(s: State) {
 
 export function summarize(s: State): DaySummary {
   return {
-    progress: progress(s), prayers: n(s.prayers),
+    progress: progress(s), prayers: n(s.prayers), prayersTotal: s.prayers.length,
     routines: n(s.morning) + n(s.evening), routinesTotal: s.morning.length + s.evening.length,
     tasks: n(s.blocks), tasksTotal: s.blocks.length,
     studyMin: s.study.reduce((t, b) => t + (b.done ? Math.max(b.spent, b.minutes) : b.spent), 0),
@@ -96,7 +107,7 @@ function load() {
     if (raw) {
       const p = JSON.parse(raw);
       const base = initial();
-      state = rollover({ ...base, ...p, water: { ...base.water, ...p.water }, health: { ...base.health, ...p.health }, topic: { ...base.topic, ...p.topic } });
+      state = rollover({ ...base, ...p, water: { ...base.water, ...p.water }, health: { ...base.health, ...p.health }, topic: { ...base.topic, ...p.topic }, garden: { ...base.garden, ...p.garden }, prayers: normalizePrayers(p.prayers) });
     }
   } catch { /* ignore corrupt storage */ }
   applyTheme();
@@ -104,7 +115,11 @@ function load() {
 
 export function update(fn: (s: State) => State) {
   state = rollover(fn(state));
-  state = { ...state, history: { ...state.history, [state.day]: summarize(state) } };
+  const today = summarize(state);
+  state = { ...state, history: { ...state.history, [state.day]: today } };
+  if (today.progress === 100 && state.garden.lastBloom !== state.day) {
+    state = { ...state, garden: { blooms: state.garden.blooms + 1, lastBloom: state.day } };
+  }
   localStorage.setItem(KEY, JSON.stringify(state));
   applyTheme();
   subs.forEach((f) => f());

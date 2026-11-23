@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Page, Card } from "@/components/ui-kit";
+import { WeeklyCurve } from "@/components/weekly-curve";
 import { useStore, dayKey, type DaySummary } from "@/lib/store";
 
 export const Route = createFileRoute("/bilan")({
@@ -26,7 +27,7 @@ function DayRecap({ d }: { d: DaySummary | undefined }) {
     <div>
       <p className="font-display text-5xl text-accent-strong">{d.progress}%</p>
       <div className="mt-3">
-        <Row label="Prières" value={`${d.prayers}/5`} />
+        <Row label="Prières" value={`${d.prayers}/${d.prayersTotal ?? 5}`} />
         <Row label="Routines skincare" value={`${d.routines}/${d.routinesTotal}`} />
         <Row label="Tâches" value={`${d.tasks}/${d.tasksTotal}`} />
         <Row label="Étude" value={`${d.studyMin} min`} />
@@ -90,6 +91,8 @@ function Bilan() {
       <Card title={sel === dayKey(now) ? "Bilan du jour" : new Date(sel + "T12:00").toLocaleDateString("fr-FR", { weekday: "long", day: "numeric", month: "long" })}>
         <DayRecap d={h[sel]} />
       </Card>
+
+      <WeeklyCurve />
 
       <Card title="Bilan de la semaine">
         <div className="grid grid-cols-3 gap-2 text-center">

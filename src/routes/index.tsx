@@ -1,6 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Moon, Sparkles, ListChecks, HandHeart, Droplets, BookOpen, SkipForward, Check } from "lucide-react";
 import { Page, Card } from "@/components/ui-kit";
+import { GardenBox } from "@/components/garden-box";
+import { WeeklyCurve } from "@/components/weekly-curve";
 import { useStore, progress, update } from "@/lib/store";
 import { topicFor } from "@/lib/content";
 
@@ -19,7 +21,7 @@ function Index() {
   const p = ready ? progress(s) : 0;
   const date = new Date().toLocaleDateString("fr-FR", { weekday: "long", day: "numeric", month: "long" });
   const short = [
-    { to: "/today", label: "Salat", icon: Moon, info: `${s.prayers.filter((x) => x.done).length}/5` },
+    { to: "/today", label: "Salat", icon: Moon, info: `${s.prayers.filter((x) => x.done).length}/${s.prayers.length}` },
     { to: "/today", label: "Athkar", icon: HandHeart, info: `${s.athkar.count}/${s.athkar.goal}` },
     { to: "/routines", label: "Routines", icon: Sparkles, info: `${[...s.morning, ...s.evening].filter((x) => x.done).length}/${s.morning.length + s.evening.length}` },
     { to: "/today", label: "Time Block", icon: ListChecks, info: `${s.blocks.filter((x) => x.done).length}/${s.blocks.length}` },
@@ -28,6 +30,7 @@ function Index() {
   ] as const;
   return (
     <Page eyebrow={date} title="Today's Blessings." subtitle={s.name ? `Bismillah, ${s.name} ♡` : "Un petit pas après l'autre ♡"}>
+      <GardenBox />
       <section className="hero-card rounded-3xl p-6 text-primary-foreground">
         <p className="eyebrow !text-primary-foreground/80">Progression du jour</p>
         <div className="mt-2 flex items-end gap-3">
@@ -47,6 +50,7 @@ function Index() {
           </Link>
         ))}
       </div>
+      <WeeklyCurve />
       <TopicCard />
       <Card><p className="font-serif text-lg italic text-muted-foreground">« Certes, avec la difficulté vient la facilité. » — 94:6</p></Card>
     </Page>

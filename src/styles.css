@@ -182,3 +182,13 @@ body {
   text-transform: uppercase;
   color: var(--color-muted-foreground);
 }
+
+@keyframes garden-petal-fall {
+  0% { transform: translate(0, 0); opacity: 0; }
+  15% { opacity: 1; }
+  100% { transform: translate(-12px, 44px); opacity: 0; }
+}
+.garden-petals rect { animation: garden-petal-fall 7s linear infinite; }
+.garden-petals rect:nth-child(2) { animation-delay: 2.3s; }
+.garden-petals rect:nth-child(3) { animation-delay: 4.6s; }
+@media (prefers-reduced-motion: reduce) { .garden-petals rect { animation: none; } }
