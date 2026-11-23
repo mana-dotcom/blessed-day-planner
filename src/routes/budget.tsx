@@ -98,7 +98,7 @@ function Overview({ b }: { b: Budget }) {
               </PieChart>
             </ChartContainer>
             <div className="pointer-events-none absolute inset-0 grid place-items-center text-center">
-              <div><p className="eyebrow !text-[8px]">Total</p><p className="font-display text-base text-primary">{formatMoney(Math.round(total), b.currency)}</p></div>
+              <div><p className="eyebrow !text-[8px]">Total</p><p className="font-display text-base text-primary">{formatMoney(total, b.currency)}</p></div>
             </div>
           </div>
           <div className="w-full space-y-2">
