@@ -75,7 +75,7 @@ function Summary({ c, today }: { c: CycleData; today: string }) {
   const cards = [
     { label: "Jour du cycle", value: i.cycleDay ? `J${i.cycleDay}` : "—", sub: i.phase ? PHASES[i.phase] : "à commencer" },
     { label: "Cycle moyen", value: plural(i.avg.cycle, "jour"), sub: i.avg.measured ? `sur ${plural(i.avg.measured, "cycle")}` : "par défaut" },
-    { label: "Règles moyennes", value: plural(i.avg.period, "jour"), sub: "durée" },
+    { label: "Règles moyennes", value: plural(i.avg.period, "jour"), sub: i.avg.measuredPeriods ? `sur ${plural(i.avg.measuredPeriods, "règle")} terminée${i.avg.measuredPeriods > 1 ? "s" : ""}` : "par défaut" },
     { label: "Prochaines règles", value: i.nextStart ? fmt(i.nextStart) : "—", sub: i.fertile ? `fertile ${fmt(i.fertile.start)} – ${fmt(i.fertile.end)}` : "estimation" },
   ];
   return (
@@ -284,7 +284,7 @@ function History({ c, today }: { c: CycleData; today: string }) {
         {error && <p className="text-sm text-destructive">{error}</p>}
       </form>
       <div className="mt-5 border-t border-border/60 pt-4">
-        <p className="eyebrow text-[10px]">Valeurs par défaut (avant 2 cycles enregistrés)</p>
+        <p className="eyebrow text-[10px]">Valeurs par défaut (cycle : avant 2 règles · durée : avant une règle terminée)</p>
         <div className="mt-2 flex flex-wrap gap-3 text-sm">
           <label className="flex items-center gap-2">Cycle
             <input type="number" min={18} max={60} defaultValue={c.cycleLength} onChange={(e) => setDefault("cycleLength", e.target.value, 18, 60)} className={`${small} w-20`} /> j

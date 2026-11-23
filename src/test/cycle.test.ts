@@ -13,11 +13,11 @@ describe("cycle predictions", () => {
   });
 
   it("averages measured cycle and period lengths", () => {
-    expect(averages(c)).toEqual({ cycle: 29, period: 5, measured: 2 });
+    expect(averages(c)).toEqual({ cycle: 29, period: 5, measured: 2, measuredPeriods: 3 });
   });
 
   it("falls back to defaults without history", () => {
-    expect(averages(data({ cycleLength: 30, periodLength: 4, periods: [{ id: "x", start: "2026-11-01" }] }))).toEqual({ cycle: 30, period: 4, measured: 0 });
+    expect(averages(data({ cycleLength: 30, periodLength: 4, periods: [{ id: "x", start: "2026-11-01" }] }))).toEqual({ cycle: 30, period: 4, measured: 0, measuredPeriods: 0 });
   });
 
   it("computes cycle day, next period and fertile window", () => {

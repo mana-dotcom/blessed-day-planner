@@ -56,6 +56,7 @@ export function averages(c: CycleData) {
     cycle: lens.length ? Math.round(mean(lens)) : c.cycleLength,
     period: durs.length ? Math.round(mean(durs)) : c.periodLength,
     measured: lens.length,
+    measuredPeriods: durs.length,
   };
 }
 
