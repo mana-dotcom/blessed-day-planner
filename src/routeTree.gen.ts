@@ -11,12 +11,14 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as BilanRouteImport } from './routes/bilan'
+import { Route as BudgetRouteImport } from './routes/budget'
 import { Route as HealthRouteImport } from './routes/health'
 import { Route as JardinRouteImport } from './routes/jardin'
 import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as RoutinesRouteImport } from './routes/routines'
 import { Route as StudyRouteImport } from './routes/study'
 import { Route as TodayRouteImport } from './routes/today'
+import { Route as VisionRouteImport } from './routes/vision'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -26,6 +28,11 @@ const IndexRoute = IndexRouteImport.update({
 const BilanRoute = BilanRouteImport.update({
   id: '/bilan',
   path: '/bilan',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BudgetRoute = BudgetRouteImport.update({
+  id: '/budget',
+  path: '/budget',
   getParentRoute: () => rootRouteImport,
 } as any)
 const HealthRoute = HealthRouteImport.update({
@@ -58,80 +65,99 @@ const TodayRoute = TodayRouteImport.update({
   path: '/today',
   getParentRoute: () => rootRouteImport,
 } as any)
+const VisionRoute = VisionRouteImport.update({
+  id: '/vision',
+  path: '/vision',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/bilan': typeof BilanRoute
+  '/budget': typeof BudgetRoute
   '/health': typeof HealthRoute
   '/jardin': typeof JardinRoute
   '/profile': typeof ProfileRoute
   '/routines': typeof RoutinesRoute
   '/study': typeof StudyRoute
   '/today': typeof TodayRoute
+  '/vision': typeof VisionRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/bilan': typeof BilanRoute
+  '/budget': typeof BudgetRoute
   '/health': typeof HealthRoute
   '/jardin': typeof JardinRoute
   '/profile': typeof ProfileRoute
   '/routines': typeof RoutinesRoute
   '/study': typeof StudyRoute
   '/today': typeof TodayRoute
+  '/vision': typeof VisionRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/bilan': typeof BilanRoute
+  '/budget': typeof BudgetRoute
   '/health': typeof HealthRoute
   '/jardin': typeof JardinRoute
   '/profile': typeof ProfileRoute
   '/routines': typeof RoutinesRoute
   '/study': typeof StudyRoute
   '/today': typeof TodayRoute
+  '/vision': typeof VisionRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
     | '/bilan'
+    | '/budget'
     | '/health'
     | '/jardin'
     | '/profile'
     | '/routines'
     | '/study'
     | '/today'
+    | '/vision'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/bilan'
+    | '/budget'
     | '/health'
     | '/jardin'
     | '/profile'
     | '/routines'
     | '/study'
     | '/today'
+    | '/vision'
   id:
     | '__root__'
     | '/'
     | '/bilan'
+    | '/budget'
     | '/health'
     | '/jardin'
     | '/profile'
     | '/routines'
     | '/study'
     | '/today'
+    | '/vision'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   BilanRoute: typeof BilanRoute
+  BudgetRoute: typeof BudgetRoute
   HealthRoute: typeof HealthRoute
   JardinRoute: typeof JardinRoute
   ProfileRoute: typeof ProfileRoute
   RoutinesRoute: typeof RoutinesRoute
   StudyRoute: typeof StudyRoute
   TodayRoute: typeof TodayRoute
+  VisionRoute: typeof VisionRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -148,6 +174,13 @@ declare module '@tanstack/react-router' {
       path: '/bilan'
       fullPath: '/bilan'
       preLoaderRoute: typeof BilanRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/budget': {
+      id: '/budget'
+      path: '/budget'
+      fullPath: '/budget'
+      preLoaderRoute: typeof BudgetRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/health': {
@@ -192,18 +225,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TodayRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/vision': {
+      id: '/vision'
+      path: '/vision'
+      fullPath: '/vision'
+      preLoaderRoute: typeof VisionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   BilanRoute: BilanRoute,
+  BudgetRoute: BudgetRoute,
   HealthRoute: HealthRoute,
   JardinRoute: JardinRoute,
   ProfileRoute: ProfileRoute,
   RoutinesRoute: RoutinesRoute,
   StudyRoute: StudyRoute,
   TodayRoute: TodayRoute,
+  VisionRoute: VisionRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

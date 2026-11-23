@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { Home, Sparkles, CalendarHeart, User, Check, Trash2, Plus, Pencil, Moon, Sun, Droplets, BookOpen, CalendarDays } from "lucide-react";
+import { Home, Sparkles, CalendarHeart, User, Check, Trash2, Plus, Pencil, Moon, Sun, Droplets, BookOpen, CalendarDays, Images, Wallet } from "lucide-react";
 import { useStore, update } from "@/lib/store";
 import { useState, type ReactNode } from "react";
 
@@ -102,14 +102,16 @@ const tabs = [
   { to: "/health", label: "Health", icon: Droplets },
   { to: "/study", label: "Study", icon: BookOpen },
   { to: "/bilan", label: "Bilan", icon: CalendarDays },
+  { to: "/vision", label: "Vision", icon: Images },
+  { to: "/budget", label: "Budget", icon: Wallet },
 ] as const;
 
 function BottomNav() {
   return (
-    <nav className="glass fixed inset-x-3 bottom-3 z-50 mx-auto flex max-w-md justify-around rounded-full p-1.5">
+    <nav className="glass fixed inset-x-2 bottom-3 z-50 mx-auto flex max-w-lg justify-around rounded-full p-1.5">
       {tabs.map(({ to, label, icon: Icon }) => (
         <Link key={to} to={to} activeOptions={{ exact: true }}
-          className="flex flex-1 flex-col items-center gap-0.5 rounded-full py-2 text-[9px] uppercase tracking-wider text-muted-foreground"
+          className="flex min-w-0 flex-1 flex-col items-center gap-0.5 rounded-full py-2 text-[8px] uppercase tracking-wide text-muted-foreground sm:text-[9px] sm:tracking-wider"
           activeProps={{ className: "bg-primary !text-primary-foreground" }}>
           <Icon className="h-5 w-5" />{label}
         </Link>

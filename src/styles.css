@@ -192,3 +192,40 @@ body {
 .garden-petals rect:nth-child(2) { animation-delay: 2.3s; }
 .garden-petals rect:nth-child(3) { animation-delay: 4.6s; }
 @media (prefers-reduced-motion: reduce) { .garden-petals rect { animation: none; } }
+
+/* Postage-stamp frames for the vision board: perforated paper edge + inner ink border. */
+.stamp {
+  --stamp-paper: oklch(0.985 0.012 15);
+  --stamp-ink: oklch(0.6 0.14 5);
+  --stamp-tile: 14px;
+  position: relative;
+  padding: 10px;
+  background: radial-gradient(circle closest-side, transparent 70%, var(--stamp-paper) 74%);
+  background-size: var(--stamp-tile) var(--stamp-tile);
+  background-repeat: round;
+  background-position: calc(var(--stamp-tile) / -2) calc(var(--stamp-tile) / -2);
+  filter: drop-shadow(0 8px 12px oklch(0.4 0.1 10 / 0.22));
+}
+.stamp-inner {
+  position: relative;
+  height: 100%;
+  background: var(--stamp-paper);
+  padding: 6px;
+  outline: 1.5px solid var(--stamp-ink);
+  outline-offset: -3px;
+  color: var(--stamp-ink);
+}
+.stamp[data-frame="blush"] { --stamp-paper: oklch(0.95 0.035 10); --stamp-ink: oklch(0.62 0.15 5); }
+.stamp[data-frame="berry"] { --stamp-paper: oklch(0.42 0.12 5); --stamp-ink: oklch(0.9 0.05 10); }
+.stamp[data-frame="cream"] { --stamp-paper: oklch(0.97 0.02 80); --stamp-ink: oklch(0.45 0.1 10); }
+.stamp[data-frame="rose"] { --stamp-paper: oklch(0.78 0.11 5); --stamp-ink: oklch(0.99 0.01 10); }
+.stamp[data-frame="lilac"] { --stamp-paper: oklch(0.9 0.04 330); --stamp-ink: oklch(0.5 0.12 340); }
+.stamp-centerpiece {
+  --stamp-paper: oklch(0.985 0.012 15);
+  --stamp-tile: 16px;
+}
+.stamp-centerpiece .stamp-inner {
+  background: linear-gradient(140deg, var(--accent-strong), oklch(0.32 0.08 10));
+  outline-color: oklch(1 0 0 / 0.6);
+  color: oklch(0.98 0.01 10);
+}
