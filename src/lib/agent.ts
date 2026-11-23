@@ -180,6 +180,24 @@ Guidelines:
 
 type GeminiContent = { role: "user" | "model"; parts: { text: string }[] };
 
+const RETRYABLE_STATUSES = new Set([429, 503]);
+const RETRY_DELAYS_MS = [1000, 2000];
+
+function wait(ms: number, signal?: AbortSignal): Promise<void> {
+  return new Promise((resolve, reject) => {
+    if (signal?.aborted) return reject(new DOMException("Aborted", "AbortError"));
+    const timer = setTimeout(() => {
+      signal?.removeEventListener("abort", onAbort);
+      resolve();
+    }, ms);
+    function onAbort() {
+      clearTimeout(timer);
+      reject(new DOMException("Aborted", "AbortError"));
+    }
+    signal?.addEventListener("abort", onAbort, { once: true });
+  });
+}
+
 export async function aiReply(
   history: ChatMsg[],
   userText: string,
@@ -207,12 +225,20 @@ export async function aiReply(
   };
 
   try {
-    const res = await fetch(`${GEMINI_URL}?key=${encodeURIComponent(key)}`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body),
-      signal,
-    });
+    let res: Response;
+    let attempt = 0;
+    while (true) {
+      res = await fetch(`${GEMINI_URL}?key=${encodeURIComponent(key)}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+        signal,
+      });
+      if (!RETRYABLE_STATUSES.has(res.status) || attempt >= RETRY_DELAYS_MS.length) break;
+      await res.body?.cancel().catch(() => {});
+      await wait(RETRY_DELAYS_MS[attempt], signal);
+      attempt++;
+    }
     if (!res.ok) {
       const detail = await res.text().catch(() => "");
       return lang === "fr"
