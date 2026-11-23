@@ -141,7 +141,7 @@ export function topPriority(snap: Snapshot, lang: Lang): { title: string; detail
   return L(lang === "fr" ? "Tout est fait" : "All done", lang === "fr" ? "Alhamdulillah, ta journée est complète ♡" : "Alhamdulillah, your day is complete ♡");
 }
 
-const GEMINI_MODEL = "gemini-2.0-flash";
+const GEMINI_MODEL = "models/gemini-3.8-flash";
 const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent`;
 
 function apiKey(): string | undefined {
