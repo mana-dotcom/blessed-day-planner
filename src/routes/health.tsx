@@ -1,10 +1,9 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
-import { Droplets, RotateCcw, Salad, Dumbbell, Shuffle, Check } from "lucide-react";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { Droplets, RotateCcw, Salad, Dumbbell, Check } from "lucide-react";
 import { Page, Card } from "@/components/ui-kit";
 import { SportsList, WalkTimer } from "@/components/sports";
 import { useStore, update } from "@/lib/store";
-import { recipes, type Recipe } from "@/lib/content";
+import { recipes } from "@/lib/content";
 
 export const Route = createFileRoute("/health")({
   head: () => ({ meta: [
@@ -15,8 +14,6 @@ export const Route = createFileRoute("/health")({
   ] }),
   component: Health,
 });
-
-const tags: ("Tous" | Recipe["tag"])[] = ["Tous", "Petit-déj", "Déjeuner", "Dîner", "Snack"];
 
 function Water() {
   const [s] = useStore();
@@ -77,31 +74,16 @@ function Reminder({ k, title, text, icon }: { k: "food" | "sport"; title: string
   );
 }
 
-function Recipes() {
-  const [tag, setTag] = useState<(typeof tags)[number]>("Tous");
-  const [pick, setPick] = useState<Recipe | null>(null);
-  const list = recipes.filter((r) => tag === "Tous" || r.tag === tag);
+function RecipesLink() {
   return (
-    <Card title="Healthy Recipes" right={
-      <button onClick={() => setPick(list[Math.floor(Math.random() * list.length)] ?? null)} className="flex items-center gap-1 rounded-full bg-primary px-3 py-1.5 text-xs uppercase tracking-widest text-primary-foreground"><Shuffle className="h-3.5 w-3.5" />Idée</button>}>
-      <div className="flex flex-wrap gap-2">
-        {tags.map((t) => (
-          <button key={t} onClick={() => { setTag(t); setPick(null); }} className={`rounded-full px-3 py-1 text-xs ${tag === t ? "bg-primary text-primary-foreground" : "bg-secondary text-secondary-foreground"}`}>{t}</button>
-        ))}
+    <Link to="/recipes" className="glass flex items-center gap-4 rounded-3xl p-5 transition hover:-translate-y-0.5">
+      <div className="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-secondary text-accent-strong"><Salad className="h-6 w-6" /></div>
+      <div className="min-w-0 flex-1">
+        <p className="font-display text-xl text-primary">Healthy Recipes</p>
+        <p className="font-serif italic text-muted-foreground">{recipes.length} recettes · filtres, favoris & étapes</p>
       </div>
-      <div className="mt-4 space-y-2">
-        {(pick ? [pick] : list).map((r) => (
-          <div key={r.name} className="rounded-2xl bg-card/70 p-4">
-            <div className="flex items-baseline justify-between gap-2">
-              <p className="font-serif text-lg font-medium">{r.name}</p>
-              <span className="eyebrow shrink-0 text-[10px]">{r.time}</span>
-            </div>
-            <p className="mt-1 text-sm text-muted-foreground">{r.ingredients}</p>
-          </div>
-        ))}
-        {pick && <button onClick={() => setPick(null)} className="eyebrow mt-1 underline">Voir toutes les recettes</button>}
-      </div>
-    </Card>
+      <span className="eyebrow shrink-0">Voir →</span>
+    </Link>
   );
 }
 
@@ -113,7 +95,7 @@ function Health() {
       <Reminder k="sport" title="Sport" text="Bouge au moins 20 min : marche, yoga ou séance." icon={<Dumbbell className="h-6 w-6" />} />
       <SportsList />
       <WalkTimer />
-      <Recipes />
+      <RecipesLink />
     </Page>
   );
 }
