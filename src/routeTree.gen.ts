@@ -16,7 +16,9 @@ import { Route as CycleRouteImport } from './routes/cycle'
 import { Route as HealthRouteImport } from './routes/health'
 import { Route as JardinRouteImport } from './routes/jardin'
 import { Route as ProfileRouteImport } from './routes/profile'
+import { Route as QuranRouteImport } from './routes/quran'
 import { Route as RoutinesRouteImport } from './routes/routines'
+import { Route as StageRouteImport } from './routes/stage'
 import { Route as StudyRouteImport } from './routes/study'
 import { Route as TodayRouteImport } from './routes/today'
 import { Route as VisionRouteImport } from './routes/vision'
@@ -56,9 +58,19 @@ const ProfileRoute = ProfileRouteImport.update({
   path: '/profile',
   getParentRoute: () => rootRouteImport,
 } as any)
+const QuranRoute = QuranRouteImport.update({
+  id: '/quran',
+  path: '/quran',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const RoutinesRoute = RoutinesRouteImport.update({
   id: '/routines',
   path: '/routines',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StageRoute = StageRouteImport.update({
+  id: '/stage',
+  path: '/stage',
   getParentRoute: () => rootRouteImport,
 } as any)
 const StudyRoute = StudyRouteImport.update({
@@ -85,7 +97,9 @@ export interface FileRoutesByFullPath {
   '/health': typeof HealthRoute
   '/jardin': typeof JardinRoute
   '/profile': typeof ProfileRoute
+  '/quran': typeof QuranRoute
   '/routines': typeof RoutinesRoute
+  '/stage': typeof StageRoute
   '/study': typeof StudyRoute
   '/today': typeof TodayRoute
   '/vision': typeof VisionRoute
@@ -98,7 +112,9 @@ export interface FileRoutesByTo {
   '/health': typeof HealthRoute
   '/jardin': typeof JardinRoute
   '/profile': typeof ProfileRoute
+  '/quran': typeof QuranRoute
   '/routines': typeof RoutinesRoute
+  '/stage': typeof StageRoute
   '/study': typeof StudyRoute
   '/today': typeof TodayRoute
   '/vision': typeof VisionRoute
@@ -112,7 +128,9 @@ export interface FileRoutesById {
   '/health': typeof HealthRoute
   '/jardin': typeof JardinRoute
   '/profile': typeof ProfileRoute
+  '/quran': typeof QuranRoute
   '/routines': typeof RoutinesRoute
+  '/stage': typeof StageRoute
   '/study': typeof StudyRoute
   '/today': typeof TodayRoute
   '/vision': typeof VisionRoute
@@ -127,7 +145,9 @@ export interface FileRouteTypes {
     | '/health'
     | '/jardin'
     | '/profile'
+    | '/quran'
     | '/routines'
+    | '/stage'
     | '/study'
     | '/today'
     | '/vision'
@@ -140,7 +160,9 @@ export interface FileRouteTypes {
     | '/health'
     | '/jardin'
     | '/profile'
+    | '/quran'
     | '/routines'
+    | '/stage'
     | '/study'
     | '/today'
     | '/vision'
@@ -153,7 +175,9 @@ export interface FileRouteTypes {
     | '/health'
     | '/jardin'
     | '/profile'
+    | '/quran'
     | '/routines'
+    | '/stage'
     | '/study'
     | '/today'
     | '/vision'
@@ -167,7 +191,9 @@ export interface RootRouteChildren {
   HealthRoute: typeof HealthRoute
   JardinRoute: typeof JardinRoute
   ProfileRoute: typeof ProfileRoute
+  QuranRoute: typeof QuranRoute
   RoutinesRoute: typeof RoutinesRoute
+  StageRoute: typeof StageRoute
   StudyRoute: typeof StudyRoute
   TodayRoute: typeof TodayRoute
   VisionRoute: typeof VisionRoute
@@ -224,11 +250,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProfileRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/quran': {
+      id: '/quran'
+      path: '/quran'
+      fullPath: '/quran'
+      preLoaderRoute: typeof QuranRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/routines': {
       id: '/routines'
       path: '/routines'
       fullPath: '/routines'
       preLoaderRoute: typeof RoutinesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/stage': {
+      id: '/stage'
+      path: '/stage'
+      fullPath: '/stage'
+      preLoaderRoute: typeof StageRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/study': {
@@ -263,7 +303,9 @@ const rootRouteChildren: RootRouteChildren = {
   HealthRoute: HealthRoute,
   JardinRoute: JardinRoute,
   ProfileRoute: ProfileRoute,
+  QuranRoute: QuranRoute,
   RoutinesRoute: RoutinesRoute,
+  StageRoute: StageRoute,
   StudyRoute: StudyRoute,
   TodayRoute: TodayRoute,
   VisionRoute: VisionRoute,

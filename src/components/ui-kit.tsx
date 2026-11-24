@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { Home, Sparkles, CalendarHeart, User, Check, Trash2, Plus, Pencil, Moon, Sun, Droplets, BookOpen, CalendarDays, Images, Wallet, Flower2 } from "lucide-react";
+import { Home, Sparkles, CalendarHeart, User, Check, Trash2, Plus, Pencil, Moon, Sun, Droplets, BookOpen, CalendarDays, Images, Wallet, Flower2, Briefcase, BookHeart } from "lucide-react";
 import { useStore, update } from "@/lib/store";
 import { useState, type ReactNode } from "react";
 
@@ -105,14 +105,16 @@ const tabs = [
   { to: "/cycle", label: "Cycle", icon: Flower2 },
   { to: "/vision", label: "Vision", icon: Images },
   { to: "/budget", label: "Budget", icon: Wallet },
+  { to: "/stage", label: "Stage", icon: Briefcase },
+  { to: "/quran", label: "Quran", icon: BookHeart },
 ] as const;
 
 function BottomNav() {
   return (
-    <nav className="glass fixed inset-x-2 bottom-3 z-50 mx-auto flex max-w-lg justify-around rounded-full p-1">
+    <nav className="glass fixed inset-x-2 bottom-3 z-50 mx-auto flex max-w-lg gap-0.5 overflow-x-auto rounded-full p-1 [scrollbar-width:none]">
       {tabs.map(({ to, label, icon: Icon }) => (
         <Link key={to} to={to} activeOptions={{ exact: true }}
-          className="flex min-w-0 flex-1 flex-col items-center gap-0.5 rounded-full py-2 text-[7.5px] uppercase tracking-normal text-muted-foreground sm:text-[9px] sm:tracking-wider"
+          className="flex min-w-[52px] flex-1 shrink-0 flex-col items-center gap-0.5 rounded-full py-2 text-[8px] uppercase tracking-normal text-muted-foreground sm:text-[9px] sm:tracking-wider"
           activeProps={{ className: "bg-primary !text-primary-foreground" }}>
           <Icon className="h-[18px] w-[18px] sm:h-5 sm:w-5" />{label}
         </Link>
