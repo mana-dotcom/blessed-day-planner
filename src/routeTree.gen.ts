@@ -19,6 +19,7 @@ import { Route as JeuxRouteImport } from './routes/jeux'
 import { Route as JeuxSudokuRouteImport } from './routes/jeux-sudoku'
 import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as QuranRouteImport } from './routes/quran'
+import { Route as RecettesRouteImport } from './routes/recettes'
 import { Route as RoutinesRouteImport } from './routes/routines'
 import { Route as StageRouteImport } from './routes/stage'
 import { Route as StudyRouteImport } from './routes/study'
@@ -75,6 +76,11 @@ const QuranRoute = QuranRouteImport.update({
   path: '/quran',
   getParentRoute: () => rootRouteImport,
 } as any)
+const RecettesRoute = RecettesRouteImport.update({
+  id: '/recettes',
+  path: '/recettes',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const RoutinesRoute = RoutinesRouteImport.update({
   id: '/routines',
   path: '/routines',
@@ -112,6 +118,7 @@ export interface FileRoutesByFullPath {
   '/jeux-sudoku': typeof JeuxSudokuRoute
   '/profile': typeof ProfileRoute
   '/quran': typeof QuranRoute
+  '/recettes': typeof RecettesRoute
   '/routines': typeof RoutinesRoute
   '/stage': typeof StageRoute
   '/study': typeof StudyRoute
@@ -129,6 +136,7 @@ export interface FileRoutesByTo {
   '/jeux-sudoku': typeof JeuxSudokuRoute
   '/profile': typeof ProfileRoute
   '/quran': typeof QuranRoute
+  '/recettes': typeof RecettesRoute
   '/routines': typeof RoutinesRoute
   '/stage': typeof StageRoute
   '/study': typeof StudyRoute
@@ -147,6 +155,7 @@ export interface FileRoutesById {
   '/jeux-sudoku': typeof JeuxSudokuRoute
   '/profile': typeof ProfileRoute
   '/quran': typeof QuranRoute
+  '/recettes': typeof RecettesRoute
   '/routines': typeof RoutinesRoute
   '/stage': typeof StageRoute
   '/study': typeof StudyRoute
@@ -166,6 +175,7 @@ export interface FileRouteTypes {
     | '/jeux-sudoku'
     | '/profile'
     | '/quran'
+    | '/recettes'
     | '/routines'
     | '/stage'
     | '/study'
@@ -183,6 +193,7 @@ export interface FileRouteTypes {
     | '/jeux-sudoku'
     | '/profile'
     | '/quran'
+    | '/recettes'
     | '/routines'
     | '/stage'
     | '/study'
@@ -200,6 +211,7 @@ export interface FileRouteTypes {
     | '/jeux-sudoku'
     | '/profile'
     | '/quran'
+    | '/recettes'
     | '/routines'
     | '/stage'
     | '/study'
@@ -218,6 +230,7 @@ export interface RootRouteChildren {
   JeuxSudokuRoute: typeof JeuxSudokuRoute
   ProfileRoute: typeof ProfileRoute
   QuranRoute: typeof QuranRoute
+  RecettesRoute: typeof RecettesRoute
   RoutinesRoute: typeof RoutinesRoute
   StageRoute: typeof StageRoute
   StudyRoute: typeof StudyRoute
@@ -297,6 +310,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof QuranRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/recettes': {
+      id: '/recettes'
+      path: '/recettes'
+      fullPath: '/recettes'
+      preLoaderRoute: typeof RecettesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/routines': {
       id: '/routines'
       path: '/routines'
@@ -346,6 +366,7 @@ const rootRouteChildren: RootRouteChildren = {
   JeuxSudokuRoute: JeuxSudokuRoute,
   ProfileRoute: ProfileRoute,
   QuranRoute: QuranRoute,
+  RecettesRoute: RecettesRoute,
   RoutinesRoute: RoutinesRoute,
   StageRoute: StageRoute,
   StudyRoute: StudyRoute,

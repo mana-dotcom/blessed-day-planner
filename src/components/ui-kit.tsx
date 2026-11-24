@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { Home, Sparkles, CalendarHeart, User, Check, Trash2, Plus, Pencil, Moon, Sun, Droplets, BookOpen, CalendarDays, Images, Wallet, Flower2, Briefcase, BookHeart } from "lucide-react";
+import { Home, Sparkles, CalendarHeart, User, Check, Trash2, Plus, Pencil, Moon, Sun, Droplets, BookOpen, CalendarDays, Images, Wallet, Flower2, Briefcase, BookHeart, Salad } from "lucide-react";
 import { useStore, update } from "@/lib/store";
 import { useState, type ReactNode } from "react";
 
@@ -100,6 +100,7 @@ const tabs = [
   { to: "/today", label: "Today", icon: CalendarHeart },
   { to: "/routines", label: "Glow", icon: Sparkles },
   { to: "/health", label: "Health", icon: Droplets },
+  { to: "/recettes", label: "Recipes", icon: Salad },
   { to: "/study", label: "Study", icon: BookOpen },
   { to: "/bilan", label: "Bilan", icon: CalendarDays },
   { to: "/cycle", label: "Cycle", icon: Flower2 },
