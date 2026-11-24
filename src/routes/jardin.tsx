@@ -1,6 +1,6 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
-import { Star, Droplets, Lock, Fence, Lamp, Flower2, Droplet, Plus, Sprout } from "lucide-react";
+import { Star, Droplets, Lock, Fence, Lamp, Flower2, Droplet, Plus, Sprout, ArrowLeft } from "lucide-react";
 import { Page, Card } from "@/components/ui-kit";
 import { PlantSprite } from "@/components/plant-sprite";
 import { useStore } from "@/lib/store";
@@ -34,6 +34,9 @@ function Jardin() {
 
   return (
     <Page eyebrow="Mini-jeu" title="Jardin cozy." subtitle="Arrose, récolte, fais fleurir ♡">
+      <Link to="/jeux" className="flex w-fit items-center gap-1.5 rounded-full bg-secondary px-4 py-2 text-xs uppercase tracking-widest text-secondary-foreground transition hover:bg-secondary/70">
+        <ArrowLeft className="h-3.5 w-3.5" /> Back to Games
+      </Link>
       <div className="flex gap-3">
         <Stat icon={<Star className="h-5 w-5 fill-current" />} label="Njoum" value={ready ? f.stars : 0} />
         <Stat icon={<Droplets className="h-5 w-5" />} label="Arrosoir" value={ready ? `${f.water}/${f.maxWater}` : "–"} />

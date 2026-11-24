@@ -15,6 +15,8 @@ import { Route as BudgetRouteImport } from './routes/budget'
 import { Route as CycleRouteImport } from './routes/cycle'
 import { Route as HealthRouteImport } from './routes/health'
 import { Route as JardinRouteImport } from './routes/jardin'
+import { Route as JeuxRouteImport } from './routes/jeux'
+import { Route as JeuxSudokuRouteImport } from './routes/jeux-sudoku'
 import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as QuranRouteImport } from './routes/quran'
 import { Route as RoutinesRouteImport } from './routes/routines'
@@ -51,6 +53,16 @@ const HealthRoute = HealthRouteImport.update({
 const JardinRoute = JardinRouteImport.update({
   id: '/jardin',
   path: '/jardin',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const JeuxRoute = JeuxRouteImport.update({
+  id: '/jeux',
+  path: '/jeux',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const JeuxSudokuRoute = JeuxSudokuRouteImport.update({
+  id: '/jeux-sudoku',
+  path: '/jeux-sudoku',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProfileRoute = ProfileRouteImport.update({
@@ -96,6 +108,8 @@ export interface FileRoutesByFullPath {
   '/cycle': typeof CycleRoute
   '/health': typeof HealthRoute
   '/jardin': typeof JardinRoute
+  '/jeux': typeof JeuxRoute
+  '/jeux-sudoku': typeof JeuxSudokuRoute
   '/profile': typeof ProfileRoute
   '/quran': typeof QuranRoute
   '/routines': typeof RoutinesRoute
@@ -111,6 +125,8 @@ export interface FileRoutesByTo {
   '/cycle': typeof CycleRoute
   '/health': typeof HealthRoute
   '/jardin': typeof JardinRoute
+  '/jeux': typeof JeuxRoute
+  '/jeux-sudoku': typeof JeuxSudokuRoute
   '/profile': typeof ProfileRoute
   '/quran': typeof QuranRoute
   '/routines': typeof RoutinesRoute
@@ -127,6 +143,8 @@ export interface FileRoutesById {
   '/cycle': typeof CycleRoute
   '/health': typeof HealthRoute
   '/jardin': typeof JardinRoute
+  '/jeux': typeof JeuxRoute
+  '/jeux-sudoku': typeof JeuxSudokuRoute
   '/profile': typeof ProfileRoute
   '/quran': typeof QuranRoute
   '/routines': typeof RoutinesRoute
@@ -144,6 +162,8 @@ export interface FileRouteTypes {
     | '/cycle'
     | '/health'
     | '/jardin'
+    | '/jeux'
+    | '/jeux-sudoku'
     | '/profile'
     | '/quran'
     | '/routines'
@@ -159,6 +179,8 @@ export interface FileRouteTypes {
     | '/cycle'
     | '/health'
     | '/jardin'
+    | '/jeux'
+    | '/jeux-sudoku'
     | '/profile'
     | '/quran'
     | '/routines'
@@ -174,6 +196,8 @@ export interface FileRouteTypes {
     | '/cycle'
     | '/health'
     | '/jardin'
+    | '/jeux'
+    | '/jeux-sudoku'
     | '/profile'
     | '/quran'
     | '/routines'
@@ -190,6 +214,8 @@ export interface RootRouteChildren {
   CycleRoute: typeof CycleRoute
   HealthRoute: typeof HealthRoute
   JardinRoute: typeof JardinRoute
+  JeuxRoute: typeof JeuxRoute
+  JeuxSudokuRoute: typeof JeuxSudokuRoute
   ProfileRoute: typeof ProfileRoute
   QuranRoute: typeof QuranRoute
   RoutinesRoute: typeof RoutinesRoute
@@ -241,6 +267,20 @@ declare module '@tanstack/react-router' {
       path: '/jardin'
       fullPath: '/jardin'
       preLoaderRoute: typeof JardinRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/jeux': {
+      id: '/jeux'
+      path: '/jeux'
+      fullPath: '/jeux'
+      preLoaderRoute: typeof JeuxRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/jeux-sudoku': {
+      id: '/jeux-sudoku'
+      path: '/jeux-sudoku'
+      fullPath: '/jeux-sudoku'
+      preLoaderRoute: typeof JeuxSudokuRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/profile': {
@@ -302,6 +342,8 @@ const rootRouteChildren: RootRouteChildren = {
   CycleRoute: CycleRoute,
   HealthRoute: HealthRoute,
   JardinRoute: JardinRoute,
+  JeuxRoute: JeuxRoute,
+  JeuxSudokuRoute: JeuxSudokuRoute,
   ProfileRoute: ProfileRoute,
   QuranRoute: QuranRoute,
   RoutinesRoute: RoutinesRoute,
