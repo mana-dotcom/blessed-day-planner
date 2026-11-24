@@ -31,11 +31,11 @@ function Index() {
   return (
     <Page eyebrow={date} title="Today's Blessings." subtitle={s.name ? `Bismillah, ${s.name} ♡` : "Un petit pas après l'autre ♡"}>
       <GardenBox />
-      <Link to="/jardin" className="glass flex items-center gap-4 rounded-3xl p-5 transition hover:-translate-y-0.5">
+      <Link to="/jeux" className="glass flex items-center gap-4 rounded-3xl p-5 transition hover:-translate-y-0.5">
         <div className="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-secondary text-accent-strong"><Sprout className="h-6 w-6" /></div>
         <div className="min-w-0 flex-1">
-          <p className="font-display text-xl text-primary">Jardin cozy</p>
-          <p className="font-serif italic text-muted-foreground">Arrose, récolte, gagne des njoum</p>
+          <p className="font-display text-xl text-primary">Jeux</p>
+          <p className="font-serif italic text-muted-foreground">Jardin cozy · Sudoku.exe</p>
         </div>
         <span className="eyebrow flex shrink-0 items-center gap-1"><Star className="h-3.5 w-3.5 fill-current" />{ready ? s.farm.stars : 0}</span>
       </Link>

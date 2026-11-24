@@ -91,4 +91,5 @@ export const actions = {
     if (!d || f.decor.includes(id) || f.stars < d.price) return f;
     return { ...f, stars: f.stars - d.price, decor: [...f.decor, id] };
   }),
+  awardStars: (n: number) => farm((f) => ({ ...f, stars: f.stars + n })),
 };

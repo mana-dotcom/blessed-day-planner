@@ -13,6 +13,8 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as BilanRouteImport } from './routes/bilan'
 import { Route as HealthRouteImport } from './routes/health'
 import { Route as JardinRouteImport } from './routes/jardin'
+import { Route as JeuxRouteImport } from './routes/jeux'
+import { Route as JeuxSudokuRouteImport } from './routes/jeux-sudoku'
 import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as RoutinesRouteImport } from './routes/routines'
 import { Route as StudyRouteImport } from './routes/study'
@@ -36,6 +38,16 @@ const HealthRoute = HealthRouteImport.update({
 const JardinRoute = JardinRouteImport.update({
   id: '/jardin',
   path: '/jardin',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const JeuxRoute = JeuxRouteImport.update({
+  id: '/jeux',
+  path: '/jeux',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const JeuxSudokuRoute = JeuxSudokuRouteImport.update({
+  id: '/jeux-sudoku',
+  path: '/jeux-sudoku',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProfileRoute = ProfileRouteImport.update({
@@ -64,6 +76,8 @@ export interface FileRoutesByFullPath {
   '/bilan': typeof BilanRoute
   '/health': typeof HealthRoute
   '/jardin': typeof JardinRoute
+  '/jeux': typeof JeuxRoute
+  '/jeux-sudoku': typeof JeuxSudokuRoute
   '/profile': typeof ProfileRoute
   '/routines': typeof RoutinesRoute
   '/study': typeof StudyRoute
@@ -74,6 +88,8 @@ export interface FileRoutesByTo {
   '/bilan': typeof BilanRoute
   '/health': typeof HealthRoute
   '/jardin': typeof JardinRoute
+  '/jeux': typeof JeuxRoute
+  '/jeux-sudoku': typeof JeuxSudokuRoute
   '/profile': typeof ProfileRoute
   '/routines': typeof RoutinesRoute
   '/study': typeof StudyRoute
@@ -85,6 +101,8 @@ export interface FileRoutesById {
   '/bilan': typeof BilanRoute
   '/health': typeof HealthRoute
   '/jardin': typeof JardinRoute
+  '/jeux': typeof JeuxRoute
+  '/jeux-sudoku': typeof JeuxSudokuRoute
   '/profile': typeof ProfileRoute
   '/routines': typeof RoutinesRoute
   '/study': typeof StudyRoute
@@ -97,6 +115,8 @@ export interface FileRouteTypes {
     | '/bilan'
     | '/health'
     | '/jardin'
+    | '/jeux'
+    | '/jeux-sudoku'
     | '/profile'
     | '/routines'
     | '/study'
@@ -107,6 +127,8 @@ export interface FileRouteTypes {
     | '/bilan'
     | '/health'
     | '/jardin'
+    | '/jeux'
+    | '/jeux-sudoku'
     | '/profile'
     | '/routines'
     | '/study'
@@ -117,6 +139,8 @@ export interface FileRouteTypes {
     | '/bilan'
     | '/health'
     | '/jardin'
+    | '/jeux'
+    | '/jeux-sudoku'
     | '/profile'
     | '/routines'
     | '/study'
@@ -128,6 +152,8 @@ export interface RootRouteChildren {
   BilanRoute: typeof BilanRoute
   HealthRoute: typeof HealthRoute
   JardinRoute: typeof JardinRoute
+  JeuxRoute: typeof JeuxRoute
+  JeuxSudokuRoute: typeof JeuxSudokuRoute
   ProfileRoute: typeof ProfileRoute
   RoutinesRoute: typeof RoutinesRoute
   StudyRoute: typeof StudyRoute
@@ -162,6 +188,20 @@ declare module '@tanstack/react-router' {
       path: '/jardin'
       fullPath: '/jardin'
       preLoaderRoute: typeof JardinRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/jeux': {
+      id: '/jeux'
+      path: '/jeux'
+      fullPath: '/jeux'
+      preLoaderRoute: typeof JeuxRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/jeux-sudoku': {
+      id: '/jeux-sudoku'
+      path: '/jeux-sudoku'
+      fullPath: '/jeux-sudoku'
+      preLoaderRoute: typeof JeuxSudokuRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/profile': {
@@ -200,6 +240,8 @@ const rootRouteChildren: RootRouteChildren = {
   BilanRoute: BilanRoute,
   HealthRoute: HealthRoute,
   JardinRoute: JardinRoute,
+  JeuxRoute: JeuxRoute,
+  JeuxSudokuRoute: JeuxSudokuRoute,
   ProfileRoute: ProfileRoute,
   RoutinesRoute: RoutinesRoute,
   StudyRoute: StudyRoute,
